@@ -40,9 +40,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mItemList.size();
     }
 
-    public void add(int position, MyBleDeviceInfoStore item) {
+    private void add(int position, MyBleDeviceInfoStore item) {
         mItemList.add(position, item);
         notifyItemInserted(position);
+    }
+
+    private void remove(int position) {
+        mItemList.remove(position);
+        notifyItemRemoved(position);
     }
 
     public void update(MyBleDeviceInfoStore item) {
@@ -57,11 +62,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         // not found
         this.add(mItemList.size(), item);
 
-    }
-
-    public void remove(int position) {
-        mItemList.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void clear(){

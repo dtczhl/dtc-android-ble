@@ -45,10 +45,6 @@ public class MainActivity extends Activity {
     private MyRecyclerViewAdapter mScanViewAdapter;
     private RecyclerView.LayoutManager mScanViewLayoutManager;
 
-//    private Timer mScanViewTimer;
-//    private TimerTask mScanViewTimerTask;
-//    private final int SCAN_VIEW_PERIOD = 2000;
-
     private ArrayList<String> mDeviceNameList = new ArrayList<>();
     private ArrayList<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
     private boolean mScanning = false;
@@ -118,33 +114,12 @@ public class MainActivity extends Activity {
 
                     mBluetoothLeScanner.startScan(mBleScanCallback);
 
-//                    mScanViewTimer = new Timer();
-//                    mScanViewTimerTask = new TimerTask() {
-//                        @Override
-//                        public void run() {
-//
-//                            mHandler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    mScanViewAdapter.clear();
-//
-//                                    for (MyBleDeviceInfoStore value: mScanResultMap.values()) {
-//                                        mScanViewAdapter.add(0, value);
-//                                    }
-//                                }
-//                            });
-//
-//                        }
-//                    };
-//
-//                    mScanViewTimer.schedule(mScanViewTimerTask, 0, SCAN_VIEW_PERIOD);
 
                 } else {
                     // off - stop scan
                     mScanning = false;
                     mBluetoothLeScanner.stopScan(mBleScanCallback);
 
-//                    mScanViewTimer.cancel();
                 }
             }
         });
