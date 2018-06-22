@@ -24,8 +24,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class MainActivity extends Activity {
 
@@ -112,7 +111,12 @@ public class MainActivity extends Activity {
                     mScanResultMap.clear();
                     mScanViewAdapter.clear();
 
-                    mBluetoothLeScanner.startScan(mBleScanCallback);
+                    ScanSettings.Builder builder = new ScanSettings.Builder();
+                    builder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
+                    builder.setReportDelay(0);
+
+//                    mBluetoothLeScanner.startScan(mBleScanCallback);
+                    mBluetoothLeScanner.startScan(null, builder.build(), mBleScanCallback);
 
 
                 } else {
