@@ -76,17 +76,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         notifyItemRemoved(position);
     }
 
-    public void update(MyBleDeviceInfoStore item) {
+    public int update(MyBleDeviceInfoStore item) {
 
         for (int i = 0; i < mItemList.size(); i++){
             if (mItemList.get(i).address.equals(item.address)) {
                 mItemList.set(i, item);
                 notifyItemChanged(i);
-                return;
+                return i;
             }
         }
         // not found
         this.add(mItemList.size(), item);
+        return mItemList.size() - 1;
 
     }
 

@@ -11,26 +11,62 @@
         android:layout_width="wrap_content"
         android:layout_height="57dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="ToggleButton"
         android:textOff="Scan"
         android:textOn="Stop"
-        android:textScaleX="1.5"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/scanView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:paddingBottom="50dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/tagEditView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scanToggleBtn" />
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:onClick="clearData"
+        android:text="Clear"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scanToggleBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="16dp"
+        android:text="Waiting..."
+        app:layout_constraintBaseline_toBaselineOf="@+id/scanToggleBtn"
+        app:layout_constraintEnd_toStartOf="@+id/scanToggleBtn"
+        app:layout_constraintStart_toEndOf="@+id/clearBtn"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/tagEditView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:hint="Tag for labeling data..."
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
