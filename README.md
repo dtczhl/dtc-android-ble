@@ -1,4 +1,1 @@
-# dtc-ble-scanner
-A simple BLE scanner
-
-Display info with named devices only
+Based on the branch: `dtc-ble-scanner`, data logging function is added.
