@@ -2,19 +2,33 @@ package com.huanlezhang.dtcblescanner;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.text.format.DateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<MyBleDeviceInfoStore> mItemList;
+    private Calendar mCalendar;
+
+    public SparseBooleanArray mCheckBoxArray = new SparseBooleanArray();
+
 
     public MyRecyclerViewAdapter(ArrayList<MyBleDeviceInfoStore> myDataset) {
         mItemList = myDataset;
+
+        mCalendar = Calendar.getInstance(Locale.ENGLISH);
+
     }
 
     @NonNull
@@ -27,11 +41,23 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final MyBleDeviceInfoStore itemData = mItemList.get(position);
         holder.mDeviceNameView.setText(itemData.name);
         holder.mDeviceAddressView.setText(itemData.address);
         holder.mRssiView.setText(Integer.toString(itemData.rssi));
+
+        mCalendar.setTimeInMillis(itemData.timestamp);
+        String date = DateFormat.format("hh:m:ss", mCalendar).toString();
+        Log.d("DTC", TimeZone.getDefault() + date );
+        holder.mTimestampView.setText(date);
+
+        // checkbox
+        if (!mCheckBoxArray.get(position, false)) {
+            holder.mCheckBoxView.setChecked(false);
+        } else {
+            holder.mCheckBoxView.setChecked(true);
+        }
 
     }
 
@@ -70,13 +96,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             this.remove(0);
         }
         mItemList.clear();
+        mCheckBoxArray.clear();
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mDeviceNameView;
         public TextView mDeviceAddressView;
         public TextView mRssiView;
+        public TextView mTimestampView;
+        public CheckBox mCheckBoxView;
 
         public View mLayout;
 
@@ -88,7 +117,23 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             mDeviceNameView = itemView.findViewById(R.id.scan_row_device_name);
             mDeviceAddressView = itemView.findViewById(R.id.scan_row_device_address);
             mRssiView = itemView.findViewById(R.id.scan_row_rssi);
+            mTimestampView = itemView.findViewById(R.id.scan_row_timestamp);
+            mCheckBoxView = itemView.findViewById(R.id.scan_row_checkbox);
 
+            mCheckBoxView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+
+            CheckBox checkBox = (CheckBox) view;
+            if (checkBox.isChecked()) {
+                mCheckBoxArray.put(position, true);
+            } else {
+                mCheckBoxArray.put(position, false);
+            }
         }
     }
 

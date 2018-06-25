@@ -70,7 +70,8 @@ public class MainActivity extends Activity {
 
                 String deviceAddress = bluetoothDevice.getAddress();
                 int rssi = result.getRssi();
-                Long timestamp = result.getTimestampNanos();
+                //Long timestamp = result.getTimestampNanos() / 1000000; // nano to mis
+                Long timestamp = System.currentTimeMillis();
 
                 MyBleDeviceInfoStore myBleDeviceInfoStore =
                         new MyBleDeviceInfoStore(deviceName, deviceAddress, rssi, timestamp);
@@ -115,7 +116,6 @@ public class MainActivity extends Activity {
                     builder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
                     builder.setReportDelay(0);
 
-//                    mBluetoothLeScanner.startScan(mBleScanCallback);
                     mBluetoothLeScanner.startScan(null, builder.build(), mBleScanCallback);
 
 
