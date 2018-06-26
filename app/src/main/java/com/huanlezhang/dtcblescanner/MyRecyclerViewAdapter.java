@@ -49,7 +49,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
         mCalendar.setTimeInMillis(itemData.timestamp);
         String date = DateFormat.format("hh:m:ss", mCalendar).toString();
-        Log.d("DTC", TimeZone.getDefault() + date );
         holder.mTimestampView.setText(date);
 
         // checkbox

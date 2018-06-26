@@ -52,8 +52,7 @@ public class MainActivity extends Activity {
 
 
     private FileOutputStream mFos;
-    private String mFilename = "data.csv";
-    private File mDataFile;
+    private File mMainDir;
 
     private CheckBox mLogDataCheckBox;
     private boolean mIsLogging = false;
@@ -61,7 +60,6 @@ public class MainActivity extends Activity {
     private ToggleButton mScanBtn;
     private TextView mInfoTextView;
     private EditText mTagEditText;
-    private String mTagString;
 
     private RecyclerView mScanView;
     private MyRecyclerViewAdapter mScanViewAdapter;
@@ -93,12 +91,10 @@ public class MainActivity extends Activity {
 
                 String deviceAddress = bluetoothDevice.getAddress();
                 int rssi = result.getRssi();
-                //Long timestamp = result.getTimestampNanos() / 1000000; // nano to mis
                 Long timestamp = System.currentTimeMillis();
 
                 MyBleDeviceInfoStore myBleDeviceInfoStore =
                         new MyBleDeviceInfoStore(deviceName, deviceAddress, rssi, timestamp);
-//                mScanResultMap.put(deviceAddress, myBleDeviceInfoStore);
 
                 int position = mScanViewAdapter.update(myBleDeviceInfoStore);
 
@@ -114,7 +110,7 @@ public class MainActivity extends Activity {
                     }
                 }
 
-                Log.d("DTC", deviceName + " " + deviceAddress + " " + rssi);
+                // Log.d("DTC", deviceName + " " + deviceAddress + " " + rssi);
             }
         }
 
@@ -125,16 +121,6 @@ public class MainActivity extends Activity {
         }
     };
 
-
-    @Override
-    protected void onDestroy() {
-        try {
-            mFos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        super.onDestroy();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,16 +140,25 @@ public class MainActivity extends Activity {
                     // on - scan
                     mScanning = true;
 
+                    mScanResultMap.clear();
+                    mScanViewAdapter.clear();
+
                     findViewById(R.id.clearBtn).setEnabled(false);
                     mInfoTextView.setText("Scanning...");
 
                     mLogDataCheckBox.setEnabled(true);
 
-                    mTagString = mTagEditText.getText().toString().trim();
                     mTagEditText.setEnabled(false);
+                    String filename = mTagEditText.getText().toString().trim();
+                    filename = filename + ".csv";
 
-                    mScanResultMap.clear();
-                    mScanViewAdapter.clear();
+                    File file = new File(mMainDir, filename);
+
+                    try {
+                        mFos = new FileOutputStream(file, false);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
                     ScanSettings.Builder builder = new ScanSettings.Builder();
                     builder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
@@ -187,9 +182,8 @@ public class MainActivity extends Activity {
 
                     mBluetoothLeScanner.stopScan(mBleScanCallback);
 
-                    String endLabelData = "------" + mTagString + "\n";
                     try {
-                        mFos.write(endLabelData.getBytes());
+                        mFos.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -221,15 +215,8 @@ public class MainActivity extends Activity {
         mScanView.setAdapter(mScanViewAdapter);
 
         File externalDir = Environment.getExternalStorageDirectory();
-        File pathToAppDir = new File(externalDir + "/DTC/" + getString(R.string.app_name));
-        pathToAppDir.mkdirs();
-        mDataFile = new File(pathToAppDir, mFilename);
-
-        try {
-            mFos = new FileOutputStream(mDataFile, true);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        mMainDir = new File(externalDir + "/DTC/" + getString(R.string.app_name));
+        mMainDir.mkdirs();
 
     }
 
@@ -261,12 +248,10 @@ public class MainActivity extends Activity {
     }
 
     public void clearData(View view) {
-        try {
-            mFos.close();
-            mDataFile.delete();
-            mFos = new FileOutputStream(mDataFile, true);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        File[] files = mMainDir.listFiles();
+        for (File file: files) {
+            file.delete();
         }
 
         mInfoTextView.setText("File deleted");
