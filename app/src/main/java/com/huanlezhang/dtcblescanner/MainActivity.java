@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -53,6 +54,9 @@ public class MainActivity extends Activity {
     private FileOutputStream mFos;
     private String mFilename = "data.csv";
     private File mDataFile;
+
+    private CheckBox mLogDataCheckBox;
+    private boolean mIsLogging = false;
 
     private ToggleButton mScanBtn;
     private TextView mInfoTextView;
@@ -97,13 +101,16 @@ public class MainActivity extends Activity {
 //                mScanResultMap.put(deviceAddress, myBleDeviceInfoStore);
 
                 int position = mScanViewAdapter.update(myBleDeviceInfoStore);
-                if (mScanViewAdapter.mCheckBoxArray.get(position, false)) {
-                    String logData = deviceName + "," + deviceAddress + "," + Long.toString(timestamp) + "," + Integer.toString(rssi)+'\n';
-                    try {
-                        mFos.write(logData.getBytes());
-                        mFos.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                if (mIsLogging) {
+                    if (mScanViewAdapter.mCheckBoxArray.get(position, false)) {
+                        String logData = deviceName + "," + deviceAddress + "," + Long.toString(timestamp) + "," + Integer.toString(rssi) + '\n';
+                        try {
+                            mFos.write(logData.getBytes());
+                            mFos.flush();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -150,6 +157,8 @@ public class MainActivity extends Activity {
                     findViewById(R.id.clearBtn).setEnabled(false);
                     mInfoTextView.setText("Scanning...");
 
+                    mLogDataCheckBox.setEnabled(true);
+
                     mTagString = mTagEditText.getText().toString().trim();
                     mTagEditText.setEnabled(false);
 
@@ -169,6 +178,11 @@ public class MainActivity extends Activity {
                     findViewById(R.id.clearBtn).setEnabled(true);
                     mTagEditText.setEnabled(true);
 
+
+                    mLogDataCheckBox.setEnabled(false);
+                    mLogDataCheckBox.setChecked(false);
+                    mIsLogging = false;
+
                     mInfoTextView.setText("Waiting...");
 
                     mBluetoothLeScanner.stopScan(mBleScanCallback);
@@ -185,6 +199,19 @@ public class MainActivity extends Activity {
 
         mInfoTextView = findViewById(R.id.infoTextView);
         mTagEditText = findViewById(R.id.tagEditView);
+
+        mLogDataCheckBox = findViewById(R.id.logDataCheckBox);
+        mLogDataCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBox checkBox = (CheckBox) view;
+                if (checkBox.isChecked()) {
+                    mIsLogging = true;
+                } else {
+                    mIsLogging = false;
+                }
+            }
+        });
 
         mScanView = findViewById(R.id.scanView);
         mScanViewLayoutManager = new LinearLayoutManager(this);

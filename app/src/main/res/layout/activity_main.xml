@@ -10,13 +10,13 @@
         android:id="@+id/scanToggleBtn"
         android:layout_width="wrap_content"
         android:layout_height="57dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:text="ToggleButton"
         android:textOff="Scan"
         android:textOn="Stop"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/logDataCheckBox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
@@ -49,13 +49,13 @@
         android:id="@+id/infoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="Waiting..."
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/scanToggleBtn"
         app:layout_constraintEnd_toStartOf="@+id/scanToggleBtn"
-        app:layout_constraintStart_toEndOf="@+id/clearBtn"
-        android:textSize="18sp"/>
+        app:layout_constraintStart_toEndOf="@+id/clearBtn" />
 
     <EditText
         android:id="@+id/tagEditView"
@@ -64,9 +64,21 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:hint="Tag for labeling data..."
+        android:hint="Tag for labelling data..."
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/logDataCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Log?"
+        android:textSize="18sp"
+        android:enabled="false"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scanToggleBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
