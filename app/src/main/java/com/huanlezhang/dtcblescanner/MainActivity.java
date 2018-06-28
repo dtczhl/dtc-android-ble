@@ -10,10 +10,15 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +27,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -56,6 +63,14 @@ public class MainActivity extends Activity {
 
     private CheckBox mLogDataCheckBox;
     private boolean mIsLogging = false;
+
+    // rssi plot related
+    private ImageView mRssiImageView;
+    private int mRssiImageViewHeight = 0;
+    private int mRssiImageViewWidth = 0;
+    private Bitmap mRssiBitmap;
+    private Canvas mRssiCanvas;
+    private Paint mBaseLinePaint;
 
     private ToggleButton mScanBtn;
     private TextView mInfoTextView;
@@ -176,6 +191,7 @@ public class MainActivity extends Activity {
 
                     mLogDataCheckBox.setEnabled(false);
                     mLogDataCheckBox.setChecked(false);
+
                     mIsLogging = false;
 
                     mInfoTextView.setText("Waiting...");
@@ -213,6 +229,28 @@ public class MainActivity extends Activity {
 
         mScanViewAdapter = new MyRecyclerViewAdapter(mScanResultList);
         mScanView.setAdapter(mScanViewAdapter);
+
+
+        mRssiImageView = findViewById(R.id.rssiImageView);
+        mRssiImageView.post(new Runnable() {
+            @Override
+            public void run() {
+                mRssiImageViewHeight = mRssiImageView.getHeight();
+                mRssiImageViewWidth = mRssiImageView.getWidth();
+                mRssiBitmap = Bitmap.createBitmap(mRssiImageViewWidth, mRssiImageViewHeight, Bitmap.Config.ARGB_8888);
+                mRssiCanvas = new Canvas(mRssiBitmap);
+                mRssiCanvas.drawColor(Color.LTGRAY);
+                mBaseLinePaint = new Paint();
+                mBaseLinePaint.setColor(Color.BLACK);
+                mBaseLinePaint.setStrokeWidth(1);
+                mRssiImageView.setImageBitmap(mRssiBitmap);
+
+                mRssiCanvas.drawLine(0, mRssiImageViewHeight/2, mRssiImageViewWidth, mRssiImageViewHeight/2, mBaseLinePaint);
+
+                mRssiImageView.invalidate();
+            }
+        });
+
 
         File externalDir = Environment.getExternalStorageDirectory();
         mMainDir = new File(externalDir + "/DTC/" + getString(R.string.app_name));
@@ -254,6 +292,6 @@ public class MainActivity extends Activity {
             file.delete();
         }
 
-        mInfoTextView.setText("File deleted");
+        mInfoTextView.setText("Files deleted");
     }
 }
