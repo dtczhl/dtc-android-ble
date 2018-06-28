@@ -1,1 +1,1 @@
-Based on the branch: `dtc-ble-scanner`, data logging function is added.
+Based on the branch: `ble-logger`, plot function is added.
