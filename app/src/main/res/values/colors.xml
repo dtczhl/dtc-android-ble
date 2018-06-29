@@ -6,4 +6,9 @@
     <color name="colorYellow">#ffff00</color>
     <color name="colorGreen">#009933</color>
     <color name="colorGray">#DCDCDC</color>
+
+    <color name="colorPaint1">#990000</color>
+    <color name="colorPaint2">#009900</color>
+    <color name="colorPaint3">#000099</color>
+    <color name="colorPaintOthers">#000000</color>
 </resources>
