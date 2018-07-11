@@ -65,10 +65,6 @@ public class MainActivity extends Activity {
     private MyRecyclerViewAdapter mScanViewAdapter;
     private RecyclerView.LayoutManager mScanViewLayoutManager;
 
-    private ArrayList<String> mDeviceNameList = new ArrayList<>();
-    private ArrayList<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
-    private boolean mScanning = false;
-
     private HashMap<String, MyBleDeviceInfoStore> mScanResultMap = new HashMap<>();
     private ArrayList<MyBleDeviceInfoStore> mScanResultList = new ArrayList<>();
 
@@ -138,7 +134,6 @@ public class MainActivity extends Activity {
                 ToggleButton toggleButton = (ToggleButton) view;
                 if (toggleButton.isChecked()) {
                     // on - scan
-                    mScanning = true;
 
                     mScanResultMap.clear();
                     mScanViewAdapter.clear();
@@ -168,7 +163,6 @@ public class MainActivity extends Activity {
 
                 } else {
                     // off - stop scan
-                    mScanning = false;
 
                     findViewById(R.id.clearBtn).setEnabled(true);
                     mTagEditText.setEnabled(true);
