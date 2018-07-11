@@ -33,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.common.collect.EvictingQueue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -97,10 +96,6 @@ public class MainActivity extends Activity {
     private RecyclerView mScanView;
     private MyRecyclerViewAdapter mScanViewAdapter;
     private RecyclerView.LayoutManager mScanViewLayoutManager;
-
-    private ArrayList<String> mDeviceNameList = new ArrayList<>();
-    private ArrayList<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
-    private boolean mScanning = false;
 
     private HashMap<String, MyBleDeviceInfoStore> mScanResultMap = new HashMap<>();
     private ArrayList<MyBleDeviceInfoStore> mScanResultList = new ArrayList<>();
@@ -180,7 +175,6 @@ public class MainActivity extends Activity {
                 ToggleButton toggleButton = (ToggleButton) view;
                 if (toggleButton.isChecked()) {
                     // on - scan
-                    mScanning = true;
 
                     mScanResultMap.clear();
                     mScanViewAdapter.clear();
@@ -229,7 +223,6 @@ public class MainActivity extends Activity {
 
                 } else {
                     // off - stop scan
-                    mScanning = false;
 
                     mPlotTimer.cancel();
 
