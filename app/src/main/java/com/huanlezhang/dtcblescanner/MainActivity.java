@@ -36,17 +36,11 @@ public class MainActivity extends Activity {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    private Handler mHandler = new Handler();
-
     private ToggleButton mScanBtn;
 
     private RecyclerView mScanView;
     private MyRecyclerViewAdapter mScanViewAdapter;
     private RecyclerView.LayoutManager mScanViewLayoutManager;
-
-    private ArrayList<String> mDeviceNameList = new ArrayList<>();
-    private ArrayList<BluetoothDevice> mBluetoothDeviceList = new ArrayList<>();
-    private boolean mScanning = false;
 
     private HashMap<String, MyBleDeviceInfoStore> mScanResultMap = new HashMap<>();
     private ArrayList<MyBleDeviceInfoStore> mScanResultList = new ArrayList<>();
@@ -79,7 +73,7 @@ public class MainActivity extends Activity {
 
                 mScanViewAdapter.update(myBleDeviceInfoStore);
 
-                Log.d("DTC", deviceName + " " + deviceAddress + " " + rssi);
+                // Log.d("DTC", deviceName + " " + deviceAddress + " " + rssi);
             }
         }
 
@@ -107,7 +101,6 @@ public class MainActivity extends Activity {
                 ToggleButton toggleButton = (ToggleButton) view;
                 if (toggleButton.isChecked()) {
                     // on - scan
-                    mScanning = true;
 
                     mScanResultMap.clear();
                     mScanViewAdapter.clear();
@@ -121,7 +114,6 @@ public class MainActivity extends Activity {
 
                 } else {
                     // off - stop scan
-                    mScanning = false;
                     mBluetoothLeScanner.stopScan(mBleScanCallback);
 
                 }
