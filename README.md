@@ -1,10 +1,31 @@
+
+## About this repo
+
+Bluetootch Low Energy (BLE) implementations with Android studio.
+
+
+
+
 ## Braches:
 
+Refer to braches for codes and details
 
-* dtc-ble-scanner
+
+* `ble_scanner`
 
   Simple BLE scanner with device name, address, timestamp, and RSSI
   
-* dtc-ble-logger
+* `ble_scan_logger`
   
-  Based on `dtc-ble-scanner`, data logging function is added
+  Based on `ble_scanner`, data logging function is added
+  
+* `ble_scan_log_plotter`,
+
+  Based on `ble_scan_logger`, rssi plotting function is added
+  
+
+For projects 
+
+* `ble_scan_log_plot_autofitter`,
+
+  Linear fitting function is added
