@@ -35,3 +35,7 @@ For projects
 * `ble_scan_log_plot_autofitter`,
 
   Linear fitting function is added
+  
+* `ble_scan_log_plot_labler`,
+
+   Adapted from `ble_scan_log_plot_autofitter`, hold button for timestamp logging
